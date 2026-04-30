@@ -1,0 +1,77 @@
+﻿@model BoutiqueEnLigne.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Inscription";
+}
+
+<div class="sj-page py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-7 col-xl-6">
+
+                <div class="sj-hero mb-3">
+                    <h1 class="sj-title mt-2">Inscription</h1>
+                    <p class="sj-subtitle mt-1">Rejoins la boutique SADJEAN.</p>
+                </div>
+
+                <div class="sj-card p-4 p-md-5">
+
+                    @if (ViewData.ModelState.ErrorCount > 0)
+                    {
+                        <div class="alert alert-danger rounded-3">
+                            @Html.ValidationSummary(false)
+                        </div>
+                    }
+
+                    <form asp-action="Register" method="post">
+                        <div class="mb-3">
+                            <label class="form-label sj-text fw-semibold">Nom complet</label>
+                            <input asp-for="Fullname" class="form-control sj-input" placeholder="Ex: Thierno Sadou" />
+                            <span asp-validation-for="Fullname" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label sj-text fw-semibold">Email</label>
+                            <input asp-for="Email" class="form-control sj-input" placeholder="ex: test@sadjean.com" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label sj-text fw-semibold">Mot de passe</label>
+                            <input asp-for="Password" type="password" class="form-control sj-input" placeholder="••••••••" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label sj-text fw-semibold">Rôle</label>
+                            <select asp-for="Role" class="form-select sj-input">
+                                <option value="Client">Client</option>
+                                <option value="Vendeur">Vendeur</option>
+                            </select>
+                            <span asp-validation-for="Role" class="text-danger small"></span>
+                        </div>
+
+                        <button type="submit" class="btn sj-btn sj-btn-gold btn-lg w-100">
+                            Créer mon compte
+                        </button>
+
+                        <div class="text-center mt-4">
+                            <span class="sj-muted">Déjà un compte ?</span>
+                            <a class="fw-bold text-decoration-none" style="color: var(--sj-gold);"
+                               asp-controller="User" asp-action="Login">
+                                Se connecter
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <p class="text-center sj-muted small mt-3 mb-0">
+                    © @DateTime.Now.Year — SADJEAN Boutique
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

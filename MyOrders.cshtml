@@ -1,0 +1,96 @@
+﻿@model List<BoutiqueEnLigne.Models.Order>
+
+@{
+    ViewData["Title"] = "Mes achats";
+    decimal totalSpent = ViewBag.TotalSpent ?? 0m;
+}
+
+<div class="sj-page">
+    <div class="container py-4">
+
+        <div class="sj-hero mb-4">
+            <h1 class="sj-title">Historique de mes achats</h1>
+            <p class="sj-subtitle">
+                Consulte toutes tes factures et le total que tu as dépensé.
+            </p>
+
+            <p class="sj-muted mt-2 mb-0">
+                Total dépensé :
+                <strong style="color:var(--sj-gold)">
+                    @totalSpent.ToString("0.00") $
+                </strong>
+            </p>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="sj-card p-4 text-center">
+                <h2 class="h5 fw-bold sj-text mb-2">
+                    Aucun achat pour le moment
+                </h2>
+
+                <p class="sj-muted mb-3">
+                    Quand tu achèteras des produits, tes factures apparaîtront ici.
+                </p>
+
+                <a class="btn sj-btn sj-btn-gold"
+                   href="/Product">
+                    Voir les produits
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="sj-card p-3 p-md-4">
+
+                <div class="table-responsive">
+                    <table class="table table-dark table-borderless align-middle mb-0">
+
+                        <thead>
+                            <tr class="sj-muted">
+                                <th>Facture</th>
+                                <th>Date</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-end">Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var order in Model)
+                            {
+                                <tr>
+
+                                    <td class="sj-text fw-bold">
+                                        #@order.Id
+                                    </td>
+
+                                    <td class="sj-muted">
+                                        @order.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")
+                                    </td>
+
+                                    <td class="text-end"
+                                        style="color:var(--sj-gold); font-weight:800;">
+                                        @order.TotalAmount.ToString("0.00") $
+                                    </td>
+
+                                    <td class="text-end">
+                                        <a class="btn sj-btn sj-btn-outline-gold"
+                                           href="/Order/Invoice/@order.Id">
+                                            Voir facture
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</div>

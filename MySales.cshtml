@@ -1,0 +1,119 @@
+﻿@model List<BoutiqueEnLigne.Models.OrderItem>
+@{
+    ViewData["Title"] = "Mes ventes";
+    decimal totalEarned = ViewBag.TotalEarned ?? 0m;
+    var byInvoice = ViewBag.ByInvoice as IEnumerable<dynamic> ?? Enumerable.Empty<dynamic>();
+}
+
+<div class="sj-page">
+    <div class="container py-4">
+
+        <div class="sj-hero mb-4">
+            <h1 class="sj-title">Mes ventes</h1>
+            <p class="sj-subtitle">Tes ventes, regroupées par facture + total gagné.</p>
+
+            <p class="sj-muted mt-2 mb-0">
+                Total gagné :
+                <strong style="color:var(--sj-gold)">@totalEarned.ToString("0.00") $</strong>
+            </p>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="sj-card p-4 text-center">
+                <h2 class="h5 fw-bold sj-text mb-2">Aucune vente</h2>
+                <p class="sj-muted mb-0">Quand un client achète tes produits, ça apparaîtra ici.</p>
+            </div>
+        }
+        else
+        {
+            <div class="row g-3 g-lg-4">
+
+                <div class="col-12 col-lg-4">
+                    <div class="sj-card p-3 p-md-4" style="position: sticky; top: 90px;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="fw-bold sj-text">Par facture</div>
+                            <span class="sj-badge">SADJEAN</span>
+                        </div>
+                        <p class="sj-muted mb-3">Montant gagné sur chaque facture.</p>
+
+                       @foreach (var inv in byInvoice)
+{
+    <div class="sj-card p-3 mb-2"
+         style="background: rgba(0,0,0,.15); border: 1px solid rgba(255,255,255,.08);">
+
+        <div class="d-flex justify-content-between">
+            <span class="sj-muted">Facture #@inv.OrderId</span>
+
+            <span class="sj-text fw-bold" style="color:var(--sj-gold)">
+                @(((decimal)inv.Total).ToString("0.00")) $
+            </span>
+        </div>
+
+        <div class="d-flex justify-content-between mt-1">
+            <span class="sj-muted small">
+                @(((DateTime)inv.Date).ToLocalTime().ToString("yyyy-MM-dd HH:mm"))
+            </span>
+
+            <span class="sj-muted small">
+                @inv.Count ligne(s)
+            </span>
+        </div>
+    </div>
+}
+
+                        <hr class="text-white-50 my-3" />
+
+                        <div class="d-flex justify-content-between">
+                            <span class="sj-muted">Total gagné</span>
+                            <span class="sj-text fw-bold" style="color:var(--sj-gold)">@totalEarned.ToString("0.00") $</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-8">
+                    <div class="sj-card p-3 p-md-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div class="fw-bold sj-text">Détails des ventes</div>
+                            <span class="sj-badge">@Model.Count vente(s)</span>
+                        </div>
+                        <p class="sj-muted mb-3">Chaque ligne correspond à un produit vendu lié à une facture.</p>
+
+                        <div class="table-responsive">
+                            <table class="table table-dark table-borderless align-middle mb-0">
+                                <thead>
+                                    <tr class="sj-muted">
+                                        <th>Facture</th>
+                                        <th>Date</th>
+                                        <th>Produit</th>
+                                        <th class="text-end">Prix</th>
+                                        <th class="text-end">Qté</th>
+                                        <th class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var s in Model)
+                                    {
+                                        <tr>
+                                            <td class="sj-text fw-bold">#@s.OrderId</td>
+                                            <td class="sj-muted">@s.Order?.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm")</td>
+                                            <td class="sj-text fw-bold">@s.Product?.Title</td>
+                                            <td class="text-end sj-muted">@s.UnitPrice.ToString("0.00") $</td>
+                                            <td class="text-end sj-muted">@s.Quantity</td>
+                                            <td class="text-end" style="color:var(--sj-gold); font-weight:800;">
+                                                @s.LineTotal.ToString("0.00") $
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</div>

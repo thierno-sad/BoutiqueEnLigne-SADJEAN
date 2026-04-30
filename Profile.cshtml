@@ -1,0 +1,63 @@
+﻿@model BoutiqueEnLigne.Models.User
+@{
+    ViewData["Title"] = "Mon Profil";
+}
+
+<div class="sj-page py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+
+                <div class="sj-hero mb-3">
+                    <h1 class="sj-title mt-2">Mon profil</h1>
+                    <p class="sj-subtitle mt-1">Gère tes informations personnelles.</p>
+                </div>
+
+                <div class="sj-card p-4 p-md-5">
+
+                    @if (ViewData["Success"] != null)
+                    {
+                        <div class="alert alert-success rounded-3">
+                            @ViewData["Success"]
+                        </div>
+                    }
+
+                    @if (ViewData.ModelState.ErrorCount > 0)
+                    {
+                        <div class="alert alert-danger rounded-3">
+                            @Html.ValidationSummary(false)
+                        </div>
+                    }
+
+                    <form asp-action="Profile" method="post">
+                        <input type="hidden" asp-for="Id" />
+
+                        <div class="mb-3">
+                            <label class="form-label sj-text fw-semibold">Nom complet</label>
+                            <input asp-for="Fullname" class="form-control sj-input" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label sj-text fw-semibold">Email</label>
+                            <input asp-for="Email" class="form-control sj-input" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label sj-text fw-semibold">Rôle</label>
+                            <input asp-for="Role" class="form-control sj-input" readonly />
+                        </div>
+
+                        <button class="btn sj-btn sj-btn-gold btn-lg w-100">
+                            Sauvegarder
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

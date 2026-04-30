@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Page introuvable";
+    var code = (int)(ViewBag.Code ?? 404);
+}
+
+<div class="sj-page py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <div class="sj-hero mb-3">
+                    <h1 class="sj-title mt-2">404 — Page introuvable</h1>
+                    <p class="sj-subtitle mt-1">
+                        La page demandée n’existe pas (code : <span style="color:var(--sj-gold);font-weight:900;">@code</span>).
+                    </p>
+                </div>
+
+                <div class="sj-card p-4 p-md-5">
+                    <div class="sj-text fw-bold mb-2">Que veux-tu faire ?</div>
+                    <p class="sj-muted mb-4">
+                        Retourne à l’accueil ou explore directement le catalogue.
+                    </p>
+
+                    <div class="d-flex flex-column flex-sm-row gap-2">
+                        <a class="btn sj-btn sj-btn-gold px-4 py-2" href="/">
+                            Retour à l’accueil
+                        </a>
+                        <a class="btn sj-btn sj-btn-outline-gold px-4 py-2" href="/Product">
+                            Voir les produits
+                        </a>
+                        <a class="btn sj-btn btn-outline-light px-4 py-2" href="/User/Login">
+                            Connexion
+                        </a>
+                    </div>
+
+                    <hr style="border-color: rgba(255,255,255,.12);" class="my-4" />
+
+                    <div class="sj-muted small">
+                        Astuce : vérifie l’URL ou utilise la navbar SADJEAN.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+﻿@model BoutiqueEnLigne.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+<div class="sj-page py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-9 col-lg-6 col-xl-5">
+
+                <div class="sj-hero mb-3">
+                    
+                    <h1 class="sj-title mt-2">Connexion</h1>
+                    <p class="sj-subtitle mt-1">Bienvenue sur la boutique en ligne.</p>
+                </div>
+
+                <div class="sj-card p-4 p-md-5">
+
+                    @if (ViewData.ModelState.ErrorCount > 0)
+                    {
+                        <div class="alert alert-danger rounded-3">
+                            @Html.ValidationSummary(false)
+                        </div>
+                    }
+
+                    <form asp-action="Login" method="post">
+                        <div class="mb-3">
+                            <label class="form-label sj-text fw-semibold">Email</label>
+                            <input asp-for="Email" class="form-control sj-input" placeholder="ex: test@sadjean.com" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label sj-text fw-semibold">Mot de passe</label>
+                            <input asp-for="Password" type="password" class="form-control sj-input" placeholder="••••••••" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+
+                        <button type="submit" class="btn sj-btn sj-btn-gold btn-lg w-100">
+                            Se connecter
+                        </button>
+
+                        <div class="text-center mt-4">
+                            <span class="sj-muted">Pas encore de compte ?</span>
+                            <a class="fw-bold text-decoration-none" style="color: var(--sj-gold);"
+                               asp-controller="User" asp-action="Register">
+                                Créer un compte
+                            </a>
+                        </div>
+                    </form>
+                </div>
+
+                <p class="text-center sj-muted small mt-3 mb-0">
+                    © @DateTime.Now.Year — SADJEAN Boutique
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

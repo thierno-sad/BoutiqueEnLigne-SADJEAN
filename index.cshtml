@@ -1,0 +1,114 @@
+﻿@model List<BoutiqueEnLigne.Models.Product>
+
+@{
+    ViewData["Title"] = "Produits";
+    var categories = ViewBag.Categories as List<string> ?? new List<string>();
+    var q = ViewBag.Q as string;
+    var selectedCategory = ViewBag.Category as string;
+    var sort = ViewBag.Sort as string;
+    var hasProducts = (bool)(ViewBag.HasProducts ?? false);
+}
+
+<div class="sadjean-catalog">
+    <div class="container py-4">
+
+        <div class="sadjean-hero mb-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3">
+                <div>
+                    <h1 class="sadjean-title mb-1">Catalogue</h1>
+                    <p class="sadjean-subtitle mb-0">Explore les produits disponibles et trouve ton next item 🔥</p>
+                </div>
+
+                <div class="d-flex gap-2">
+                    @* Bouton import seulement si base vide *@
+                    @if (!hasProducts)
+                    {
+                        <a class="btn btn-outline-warning fw-bold rounded-3"
+                           asp-controller="Product" asp-action="Import">
+                            Importer (DummyJSON)
+                        </a>
+                    }
+                    <a class="btn btn-warning fw-bold rounded-3" href="/Product">
+                        Réinitialiser
+                    </a>
+                </div>
+            </div>
+
+            <form class="sadjean-filters mt-3" method="get" asp-controller="Product" asp-action="Index">
+                <div class="row g-2 align-items-end">
+                    <div class="col-12 col-lg-5">
+                        <label class="form-label fw-semibold text-white-50">Recherche</label>
+                        <input name="q" value="@q" class="form-control sadjean-input" placeholder="Chercher un produit..." />
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-3">
+                        <label class="form-label fw-semibold text-white-50">Catégorie</label>
+                        <select name="category" class="form-select sadjean-input">
+                            <option value="">Toutes</option>
+                            @foreach (var c in categories)
+                            {
+                                <option value="@c" selected="@(c == selectedCategory)">@c</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-md-6 col-lg-2">
+                        <label class="form-label fw-semibold text-white-50">Trier</label>
+                        <select name="sort" class="form-select sadjean-input">
+                            <option value="" selected="@(string.IsNullOrEmpty(sort))">A→Z</option>
+                            <option value="price_asc" selected="@(sort == "price_asc")">Prix ↑</option>
+                            <option value="price_desc" selected="@(sort == "price_desc")">Prix ↓</option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-lg-2 d-grid">
+                        <button class="btn btn-warning fw-bold sadjean-cta">Appliquer</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="alert alert-info shadow-sm rounded-3">
+                Aucun produit trouvé.
+            </div>
+        }
+        else
+        {
+            <div class="row g-3 g-md-4">
+                @foreach (var p in Model)
+                {
+                    <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+                        <div class="sadjean-card h-100">
+                            <a class="sadjean-card-link" asp-controller="Product" asp-action="Details" asp-route-id="@p.Id">
+                                <div class="sadjean-imgwrap">
+                                    <img src="@(string.IsNullOrWhiteSpace(p.ImageUrl) ? "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab" : p.ImageUrl)"
+                                         alt="@p.Title" />
+                                    <span class="sadjean-badge">@p.Category</span>
+                                </div>
+
+                                <div class="sadjean-body">
+                                    <h3 class="sadjean-name">@p.Title</h3>
+                                    <p class="sadjean-desc">
+                                        @(p.Description?.Length > 80 ? p.Description.Substring(0, 80) + "..." : p.Description)
+                                    </p>
+
+                                    <div class="sadjean-bottom">
+                                        <div class="sadjean-price">@p.Price.ToString("0.00") $</div>
+                                        <span class="sadjean-view">Voir détails →</span>
+                                    </div>
+                                </div>
+                            </a>
+                            <form method="post" asp-controller="Cart" asp-action="Add">
+                                <input type="hidden" name="id" value="@p.Id" />
+                                <button class="btn btn-warning w-100 fw-bold">Ajouter au panier</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+</div>
