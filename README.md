@@ -19,7 +19,7 @@ Application web e-commerce développée en ASP.NET Core MVC.
 ## ⚙️ Lancer le projet
 
 1. Cloner le repo
-2. Configurer les clés Stripe dans appsettings.Development.json
+2. Configurer les clés Stripe dans appsettings.json
 3. Lancer avec Visual Studio
 
 ## 👨‍💻 Auteur
